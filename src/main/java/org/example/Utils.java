@@ -91,27 +91,27 @@ public class Utils {
         //<Season, <Team, Won>>
         HashMap<Integer, HashMap<String, Integer>> result = new HashMap<>();
         for(Match match : matches){
-            if(result.containsKey(match.season)){
-                if(result.get(match.season).containsKey(match.winner)){
+            if(result.containsKey(match.getSeason())){
+                if(result.get(match.getSeason()).containsKey(match.getWinner())){
                     //get specific teams record for this season
-                    HashMap<String, Integer> seasonsWinRecord = result.get(match.season);
+                    HashMap<String, Integer> seasonsWinRecord = result.get(match.getSeason());
                     //update winner teams record
-                    seasonsWinRecord.put(match.winner, seasonsWinRecord.get(match.winner) + 1);
+                    seasonsWinRecord.put(match.getWinner(), seasonsWinRecord.get(match.getWinner()) + 1);
                     //upadte result haspmap
-                    result.put(match.season, seasonsWinRecord);
+                    result.put(match.getSeason(), seasonsWinRecord);
                 }else{
                     //fetch records for specific team for this season
-                    HashMap<String, Integer> seasonsWinRecord = result.get(match.season);
+                    HashMap<String, Integer> seasonsWinRecord = result.get(match.getSeason());
                     //make new entry seasons record for new team
-                    seasonsWinRecord.put(match.winner, 1);
+                    seasonsWinRecord.put(match.getWinner(), 1);
                     //make new entry in result haspmap
-                    result.put(match.season, seasonsWinRecord);
+                    result.put(match.getSeason(), seasonsWinRecord);
                 }
             }else{
                 //create new team record pair
                 HashMap<String, Integer> winnerCount = new HashMap<>();
-                winnerCount.put(match.winner, 1);
-                result.put(match.season, winnerCount);
+                winnerCount.put(match.getWinner(), 1);
+                result.put(match.getSeason(), winnerCount);
             }
         }
         return result;
@@ -198,4 +198,6 @@ public class Utils {
         result1.putAll(result);
         return result1;
     }
+    
+    
 }

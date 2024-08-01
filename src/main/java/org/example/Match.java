@@ -3,24 +3,24 @@ package org.example;
 import java.time.LocalDate;
 
 public class Match {
-    int id;
-    int season;
-    String city;
-    LocalDate date;
-    String team1;
-    String team2;
-    String tossWinner;
-    String tossDecision;
-    String result;
-    boolean dlApplied;
-    String winner;
-    int winByRuns;
-    int winByWickets;
-    String playerOfMatch;
-    String venue;
-    String umpire1;
-    String umpire2;
-    String umpire3;
+    private int id;
+    private int season;
+    private String city;
+    private LocalDate date;
+    private String team1;
+    private String team2;
+    private String tossWinner;
+    private String tossDecision;
+    private String result;
+    private boolean dlApplied;
+    private String winner;
+    private int winByRuns;
+    private int winByWickets;
+    private String playerOfMatch;
+    private String venue;
+    private String umpire1;
+    private String umpire2;
+    private String umpire3;
 
     public Match(int id, int season, String city, LocalDate date, String team1, String team2, String tossWinner, String tossDecision, String result, boolean dlApplied, String winner, int winByRuns, int winByWickets, String playerOfMatch, String venue, String umpire1, String umpire2, String umpire3) {
         this.id = id;
