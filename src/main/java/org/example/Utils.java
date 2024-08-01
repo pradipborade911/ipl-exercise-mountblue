@@ -198,6 +198,35 @@ public class Utils {
         result1.putAll(result);
         return result1;
     }
+
+    public static HashMap<String, HashMap<String, Integer>> dismissalsByBowler(){
+        HashMap<String, HashMap<String, Integer>> result = new HashMap<>();
+
+        for(Delivery delivery : deliveries){
+            //is this a wicket delivery,yes:no?skip:goAhead
+            if(delivery.getPlayerDismissed() == "")
+                continue;
+            //is this a run out,yes:no?skip:goAhead
+            if(delivery.getDismissalKind() == "run out")
+                continue;
+
+            if(result.containsKey(delivery.getBowler())){
+                if(result.get(delivery.getBowler()).containsKey(delivery.getBatsman())){
+                    HashMap<String, Integer> wicketsTakenByBowler = result.get(delivery.getBowler());
+                    wicketsTakenByBowler.put(delivery.getBatsman(), wicketsTakenByBowler.get(delivery.getBatsman()) + 1);
+                }else{
+                    HashMap<String, Integer> wicketsTakenByBowler = result.get(delivery.getBowler());
+                    wicketsTakenByBowler.put(delivery.getBatsman(), 1);
+                    result.put(delivery.getBowler(), wicketsTakenByBowler);
+                }
+            }else{
+                HashMap<String, Integer> wicketsTakenByBowler = new HashMap<>();
+                wicketsTakenByBowler.put(delivery.getBatsman(), 1);
+                result.put(delivery.getBowler() ,wicketsTakenByBowler);
+            }
+        }
+        return result;
+    }
     
     
 }

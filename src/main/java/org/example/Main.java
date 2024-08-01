@@ -19,7 +19,7 @@ public class Main {
                         "\n 2. Number of matches won of all teams over all the years of IPL." +
                         "\n 3. For the year 2016 get the extra runs conceded per team." +
                         "\n 4. For the year 2015 get the top economical bowlers." +
-                        "\n 5. Create your own scenario.(Not implemented)" +
+                        "\n 5. Find the highest number of times one player has been dismissed by another player" +
                         "\n 6. for exit\n");
                 int choice = sc.nextInt(); sc.nextLine();
                 switch (choice){
@@ -57,7 +57,22 @@ public class Main {
                     }
                     break;
                     case 5 : {
-
+                        HashMap<String, HashMap<String, Integer>>result = Utils.dismissalsByBowler();
+                        int highestNumberOfTimesOnePlayerHasBeenDismissedByAnotherPlayer = 0;
+                        String bowlingPlayer = "NotFound";
+                        String battingPlayer = "NotFound";
+                        for(String bowler : result.keySet()){
+                            for(String playerDismissed : result.get(bowler).keySet()){
+                                if(result.get(bowler).get(playerDismissed) > highestNumberOfTimesOnePlayerHasBeenDismissedByAnotherPlayer) {
+                                    highestNumberOfTimesOnePlayerHasBeenDismissedByAnotherPlayer = result.get(bowler).get(playerDismissed);
+                                    battingPlayer = playerDismissed;
+                                    bowlingPlayer = bowler;
+                                }
+                            }
+                        }
+                        System.out.println("Player Dismissed: " + battingPlayer +
+                                "\nNumber of times player dismissed: " + highestNumberOfTimesOnePlayerHasBeenDismissedByAnotherPlayer +
+                                "\nBowler: " + bowlingPlayer);
                     }
                     break;
                     case 6 : {
