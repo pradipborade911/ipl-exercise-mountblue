@@ -16,11 +16,12 @@ public class Utils {
     public static List<Match> matches = new ArrayList<>();
 
     public static void setData(){
-        try(CSVReader deliveriesReader = new CSVReader(new BufferedReader( new FileReader("/home/pradeep/mountblue/java/ipl/data/deliveries.csv")));
-            CSVReader matchesReader = new CSVReader(new BufferedReader( new FileReader("/home/pradeep/mountblue/java/ipl/data/matches.csv")))){
-            String[] nextRecord;
-            deliveriesReader.readNext();
-            while ((nextRecord = deliveriesReader.readNext()) != null) {
+        try(BufferedReader deliveriesReader = new BufferedReader( new FileReader("/home/pradeep/mountblue/java/ipl/data/deliveries.csv"));
+            BufferedReader matchesReader = new BufferedReader( new FileReader("/home/pradeep/mountblue/java/ipl/data/matches.csv"))){
+            String nextLine;
+            deliveriesReader.readLine();
+            while ((nextLine = deliveriesReader.readLine()) != null) {
+                String[] nextRecord = nextLine.split(",", -1);
                 Delivery delivery = new Delivery(Integer.valueOf(nextRecord[0]),
                         Integer.valueOf(nextRecord[1]),
                         nextRecord[2],
@@ -45,8 +46,9 @@ public class Utils {
                 );
                 deliveries.add(delivery);
             }
-            matchesReader.readNext();
-            while ((nextRecord = matchesReader.readNext()) != null) {
+            matchesReader.readLine();
+            while ((nextLine = matchesReader.readLine()) != null) {
+                String[] nextRecord = nextLine.split(",", -1);
                 Match match = new Match(Integer.valueOf(nextRecord[0]),
                         Integer.valueOf(nextRecord[1]),
                         nextRecord[2],
@@ -72,8 +74,6 @@ public class Utils {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (CsvValidationException e) {
             throw new RuntimeException(e);
         }
     }
@@ -227,6 +227,6 @@ public class Utils {
         }
         return result;
     }
-    
-    
+
+
 }
