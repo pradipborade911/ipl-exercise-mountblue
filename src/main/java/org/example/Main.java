@@ -20,7 +20,8 @@ public class Main {
                         "\n 3. For the year 2016 get the extra runs conceded per team." +
                         "\n 4. For the year 2015 get the top economical bowlers." +
                         "\n 5. Find the highest number of times one player has been dismissed by another player" +
-                        "\n 6. for exit\n");
+                        "\n 6. Find a batter with highest strike rate in year 2012" +
+                        "\n 7. for exit\n");
                 int choice = sc.nextInt(); sc.nextLine();
                 switch (choice){
                     case 1 : {
@@ -76,6 +77,10 @@ public class Main {
                     }
                     break;
                     case 6 : {
+                        Utils.printHighestStrikeRateBatterByYear(2016);
+                    }
+                    break;
+                    case 7 : {
                         exit = true;
                     }
                     break;
