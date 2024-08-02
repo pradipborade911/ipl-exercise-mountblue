@@ -1,8 +1,5 @@
 package org.example;
 
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvValidationException;
-
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -226,6 +223,44 @@ public class Utils {
             }
         }
         return result;
+    }
+
+    public static void printHighestStrikeRateBatterByYear(int year){
+        TreeMap<String, Double> strikeRateByBatter = new TreeMap<>();
+
+        HashMap<String, Integer> ballsFacedByBatter = new HashMap<>();
+        HashMap<String, Integer> runsScoredByBatter = new HashMap<>();
+
+        List<Integer> matchIds = new ArrayList<>();
+        for(Match match : matches)
+            if(year == match.getSeason())
+                matchIds.add(match.getId());
+
+        for(Delivery delivery : deliveries){
+            boolean isDesiredYear = false;
+            //check if delivery is from desried year
+            for (Integer id : matchIds)
+                if (delivery.getMatchId() == id) {
+                    isDesiredYear = true;
+                    break;
+                }
+            if (!isDesiredYear)
+                continue;
+
+            Integer runsScoredByBatterOnThisDelivery = delivery.getBatsmanRuns();
+            runsScoredByBatter.put(delivery.getBatsman(), runsScoredByBatter.getOrDefault(delivery.getBatsman(), 0) + runsScoredByBatterOnThisDelivery);
+            //is this a legal delivery
+            if(delivery.getNoballRuns() == 0 || true){
+                ballsFacedByBatter.put(delivery.getBatsman(), ballsFacedByBatter.getOrDefault(delivery.getBatsman(), 0) + 1);
+            }else
+                ballsFacedByBatter.put(delivery.getBatsman(), ballsFacedByBatter.getOrDefault(delivery.getBatsman(), 0));
+        }
+
+        for(String batter : runsScoredByBatter.keySet()){
+            Double strikeRate = 100 * ((double)runsScoredByBatter.get(batter) / (double)ballsFacedByBatter.get(batter));
+            strikeRateByBatter.put(batter, strikeRate);
+        }
+        System.out.println(strikeRateByBatter);
     }
 
 
