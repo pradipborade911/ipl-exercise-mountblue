@@ -27,13 +27,16 @@ public class Main {
                 int choice = sc.nextInt(); sc.nextLine();
                 switch (choice){
                     case 1 : {
-                        for(int season = 2008; season <= 2016; season++){
-                            System.out.println("Matches played in " + season + ": " + Utils.matchesPlayedInSeason(season));
+                        Map<Integer, Integer> result = Utils.matchesPlayedInSeason();
+                        for(Integer season : result.keySet()){
+                            System.out.println("Matches played in " + season + ": " + result.get(season));
                         }
                     }
                     break;
                     case 2: {
-
+                        HashMap<String, Integer> result = Utils.matchesWonByTeam();
+                        for(String team : result.keySet())
+                            System.out.println(team + ": " + result.get(team));
                     }
                     break;
                     case 3 : {
@@ -92,9 +95,12 @@ public class Main {
                     }
                     break;
                     case 7 : {
-                        HashMap<String, Integer> result = Utils.matchesWonByTeam();
-                        for(String team : result.keySet())
-                            System.out.println(team + ": " + result.get(team));
+                        HashMap<Integer, HashMap<String, Integer>> result = Utils.matchesWonByeachTeamInSeason();
+                        for(Integer season : result.keySet()){
+                            System.out.println("Season: " + season);
+                            for(String team : result.get(season).keySet())
+                                System.out.println("Team: " + team + "Wins: " + result.get(season).get(team));
+                        }
                     }
                     break;
                     case 8 : {

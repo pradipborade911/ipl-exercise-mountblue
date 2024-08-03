@@ -75,13 +75,12 @@ public class Utils {
         }
     }
 
-    public static int matchesPlayedInSeason(int season){
-        int numOfMatchesPlayed = 0;
+    public static Map<Integer, Integer> matchesPlayedInSeason(){
+        Map<Integer, Integer> result = new TreeMap<>();
         for(Match match : matches){
-            if(match.getSeason() == season)
-                ++numOfMatchesPlayed;
+            result.put(match.getSeason(), result.getOrDefault(match.getSeason(), 0) + 1);
         }
-        return numOfMatchesPlayed;
+        return result;
     }
 
     public static HashMap<Integer, HashMap<String, Integer>> matchesWonByeachTeamInSeason(){
