@@ -85,27 +85,19 @@ public class Utils {
     }
 
     public static HashMap<Integer, HashMap<String, Integer>> matchesWonByeachTeamInSeason(){
-        //<Season, <Team, Won>>
         HashMap<Integer, HashMap<String, Integer>> result = new HashMap<>();
         for(Match match : matches){
             if(result.containsKey(match.getSeason())){
                 if(result.get(match.getSeason()).containsKey(match.getWinner())){
-                    //get specific teams record for this season
                     HashMap<String, Integer> seasonsWinRecord = result.get(match.getSeason());
-                    //update winner teams record
                     seasonsWinRecord.put(match.getWinner(), seasonsWinRecord.get(match.getWinner()) + 1);
-                    //upadte result haspmap
                     result.put(match.getSeason(), seasonsWinRecord);
                 }else{
-                    //fetch records for specific team for this season
                     HashMap<String, Integer> seasonsWinRecord = result.get(match.getSeason());
-                    //make new entry seasons record for new team
                     seasonsWinRecord.put(match.getWinner(), 1);
-                    //make new entry in result haspmap
                     result.put(match.getSeason(), seasonsWinRecord);
                 }
             }else{
-                //create new team record pair
                 HashMap<String, Integer> winnerCount = new HashMap<>();
                 winnerCount.put(match.getWinner(), 1);
                 result.put(match.getSeason(), winnerCount);
@@ -116,7 +108,6 @@ public class Utils {
 
     public static HashMap<String, Integer> extrasConcededThisYearByTeams(Integer year){
         HashMap<String, Integer> result = new HashMap<>();
-        //match ids of matches played in $(year)
         List<Integer> matchIds = new ArrayList<>();
         for(Match match : matches)
             if(year == match.getSeason())
@@ -125,22 +116,18 @@ public class Utils {
         for(Delivery delivery : deliveries){
             boolean isDesiredYear = false;
 
-            //check if delivery is from desried year
             for(Integer id : matchIds){
                 if(delivery.getMatchId() == id) {
                     isDesiredYear = true;
                     break;
                 }
             }
-            //skip count if not desired year
             if(!isDesiredYear)
                 continue;
 
             if(result.containsKey(delivery.getBowlingTeam())){
-                //update extras conceded by this team
                 result.put(delivery.getBowlingTeam(), result.get(delivery.getBowlingTeam()) + delivery.getExtraRuns());
             }else{
-                //make new entry in result
                 result.put(delivery.getBowlingTeam(), delivery.getExtraRuns());
             }
         }
@@ -160,7 +147,6 @@ public class Utils {
         for(Delivery delivery : deliveries) {
             boolean isDesiredYear = false;
 
-            //check if delivery is from desried year
             for (Integer id : matchIds) {
                 if (delivery.getMatchId() == id) {
                     isDesiredYear = true;
@@ -168,7 +154,6 @@ public class Utils {
                 }
             }
 
-            //skip count if not desired year
             if (!isDesiredYear)
                 continue;
 
@@ -186,7 +171,6 @@ public class Utils {
         }
 
         for(String bowler : ballsBowledByBowler.keySet()){
-//            System.out.println(bowler + ", Balls bowled: " + ballsBowledByBowler.get(bowler) + ", Runs conceded: " + runsConcededByBowler.get(bowler));
             double overs = (double)ballsBowledByBowler.get(bowler) / 6.0;
             result.put(bowler, (double)runsConcededByBowler.get(bowler)/overs);
         }
@@ -200,10 +184,8 @@ public class Utils {
         HashMap<String, HashMap<String, Integer>> result = new HashMap<>();
 
         for(Delivery delivery : deliveries){
-            //is this a wicket delivery,yes:no?skip:goAhead
             if(delivery.getPlayerDismissed() == "")
                 continue;
-            //is this a run out,yes:no?skip:goAhead
             if(delivery.getDismissalKind() == "run out")
                 continue;
 
@@ -238,7 +220,6 @@ public class Utils {
 
         for(Delivery delivery : deliveries){
             boolean isDesiredYear = false;
-            //check if delivery is from desried year
             for (Integer id : matchIds)
                 if (delivery.getMatchId() == id) {
                     isDesiredYear = true;
@@ -249,7 +230,6 @@ public class Utils {
 
             Integer runsScoredByBatterOnThisDelivery = delivery.getBatsmanRuns();
             runsScoredByBatter.put(delivery.getBatsman(), runsScoredByBatter.getOrDefault(delivery.getBatsman(), 0) + runsScoredByBatterOnThisDelivery);
-            //is this a legal delivery
             if(delivery.getNoballRuns() == 0 && delivery.getWideRuns() == 0 ){
                 ballsFacedByBatter.put(delivery.getBatsman(), ballsFacedByBatter.getOrDefault(delivery.getBatsman(), 0) + 1);
             }else
@@ -271,6 +251,4 @@ public class Utils {
         }
         return result;
     }
-
-
 }
