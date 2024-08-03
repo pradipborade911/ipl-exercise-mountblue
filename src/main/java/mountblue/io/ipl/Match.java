@@ -1,4 +1,4 @@
-package org.example;
+package mountblue.io.ipl;
 
 import java.time.LocalDate;
 
@@ -21,27 +21,6 @@ public class Match {
     private String umpire1;
     private String umpire2;
     private String umpire3;
-
-    public Match(int id, int season, String city, LocalDate date, String team1, String team2, String tossWinner, String tossDecision, String result, boolean dlApplied, String winner, int winByRuns, int winByWickets, String playerOfMatch, String venue, String umpire1, String umpire2, String umpire3) {
-        this.id = id;
-        this.season = season;
-        this.city = city;
-        this.date = date;
-        this.team1 = team1;
-        this.team2 = team2;
-        this.tossWinner = tossWinner;
-        this.tossDecision = tossDecision;
-        this.result = result;
-        this.dlApplied = dlApplied;
-        this.winner = winner;
-        this.winByRuns = winByRuns;
-        this.winByWickets = winByWickets;
-        this.playerOfMatch = playerOfMatch;
-        this.venue = venue;
-        this.umpire1 = umpire1;
-        this.umpire2 = umpire2;
-        this.umpire3 = umpire3;
-    }
 
     public int getId() {
         return id;
