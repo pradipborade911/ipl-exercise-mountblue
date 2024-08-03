@@ -173,11 +173,11 @@ public class Utils {
                 continue;
 
             if(ballsBowledByBowler.containsKey(delivery.getBowler())){
-                runsConcededByBowler.put(delivery.getBowler(), runsConcededByBowler.get(delivery.getBowler()) + delivery.getTotalRuns() - delivery.getByeRuns() - delivery.getLegbyeRuns());
+                runsConcededByBowler.put(delivery.getBowler(), runsConcededByBowler.get(delivery.getBowler()) + delivery.getTotalRuns() - delivery.getByeRuns() - delivery.getLegbyeRuns() - delivery.getPenaltyRuns());
                 if(delivery.getWideRuns() == 0 && delivery.getNoballRuns() == 0)
                     ballsBowledByBowler.put(delivery.getBowler(), ballsBowledByBowler.get(delivery.getBowler()) + 1);
             }else{
-                runsConcededByBowler.put(delivery.getBowler(), delivery.getTotalRuns() - delivery.getByeRuns() - delivery.getLegbyeRuns());
+                runsConcededByBowler.put(delivery.getBowler(), delivery.getTotalRuns() - delivery.getByeRuns() - delivery.getLegbyeRuns() - delivery.getPenaltyRuns());
                 if(delivery.getWideRuns() == 0 && delivery.getNoballRuns() == 0)
                     ballsBowledByBowler.put(delivery.getBowler(), 1);
                 else
