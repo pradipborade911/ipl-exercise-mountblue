@@ -173,11 +173,11 @@ public class Utils {
                 continue;
 
             if(ballsBowledByBowler.containsKey(delivery.getBowler())){
-                runsConcededByBowler.put(delivery.getBowler(), runsConcededByBowler.get(delivery.getBowler()) + delivery.getTotalRuns() - delivery.getByeRuns() - delivery.getLegbyeRuns());
+                runsConcededByBowler.put(delivery.getBowler(), runsConcededByBowler.get(delivery.getBowler()) + delivery.getTotalRuns() - delivery.getByeRuns() - delivery.getLegbyeRuns() - delivery.getPenaltyRuns());
                 if(delivery.getWideRuns() == 0 && delivery.getNoballRuns() == 0)
                     ballsBowledByBowler.put(delivery.getBowler(), ballsBowledByBowler.get(delivery.getBowler()) + 1);
             }else{
-                runsConcededByBowler.put(delivery.getBowler(), delivery.getTotalRuns() - delivery.getByeRuns() - delivery.getLegbyeRuns());
+                runsConcededByBowler.put(delivery.getBowler(), delivery.getTotalRuns() - delivery.getByeRuns() - delivery.getLegbyeRuns() - delivery.getPenaltyRuns());
                 if(delivery.getWideRuns() == 0 && delivery.getNoballRuns() == 0)
                     ballsBowledByBowler.put(delivery.getBowler(), 1);
                 else
@@ -250,7 +250,7 @@ public class Utils {
             Integer runsScoredByBatterOnThisDelivery = delivery.getBatsmanRuns();
             runsScoredByBatter.put(delivery.getBatsman(), runsScoredByBatter.getOrDefault(delivery.getBatsman(), 0) + runsScoredByBatterOnThisDelivery);
             //is this a legal delivery
-            if(delivery.getNoballRuns() == 0 || true){
+            if(delivery.getNoballRuns() == 0 && delivery.getWideRuns() == 0 ){
                 ballsFacedByBatter.put(delivery.getBatsman(), ballsFacedByBatter.getOrDefault(delivery.getBatsman(), 0) + 1);
             }else
                 ballsFacedByBatter.put(delivery.getBatsman(), ballsFacedByBatter.getOrDefault(delivery.getBatsman(), 0));
@@ -261,6 +261,15 @@ public class Utils {
             strikeRateByBatter.put(batter, strikeRate);
         }
         System.out.println(strikeRateByBatter);
+    }
+
+    public static HashMap<String, Integer> matchesWonByTeam(){
+        HashMap<String, Integer> result = new HashMap<>();
+        for(Match match : matches){
+            String winnerTeam = match.getWinner();
+            result.put(winnerTeam, result.getOrDefault(winnerTeam, 0) + 1);
+        }
+        return result;
     }
 
 
