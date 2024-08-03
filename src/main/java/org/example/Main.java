@@ -1,5 +1,6 @@
 package org.example;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -21,7 +22,8 @@ public class Main {
                         "\n 4. For the year 2015 get the top economical bowlers." +
                         "\n 5. Find the highest number of times one player has been dismissed by another player" +
                         "\n 6. Find a batter with highest strike rate in year 2012" +
-                        "\n 7. for exit\n");
+                        "\n 7. Number of matches won of all teams in each season of IPL." +
+                        "\n 8. for exit\n");
                 int choice = sc.nextInt(); sc.nextLine();
                 switch (choice){
                     case 1 : {
@@ -31,15 +33,7 @@ public class Main {
                     }
                     break;
                     case 2: {
-                        HashMap<Integer, HashMap<String, Integer>> winsPerSeasonByTeam = Utils.matchesWonByeachTeamInSeason();
-                        for(int season : winsPerSeasonByTeam.keySet()){
-                            System.out.println("Season: " + season);
-                            HashMap<String, Integer> winsThisSeasonByTeam = winsPerSeasonByTeam.get(season);
-                            for(String team : winsThisSeasonByTeam.keySet()){
-                                System.out.print("Team: " + team);
-                                System.out.println(", Wins: " + winsThisSeasonByTeam.get(team));
-                            }
-                        }
+
                     }
                     break;
                     case 3 : {
@@ -58,22 +52,39 @@ public class Main {
                     }
                     break;
                     case 5 : {
-                        HashMap<String, HashMap<String, Integer>>result = Utils.dismissalsByBowler();
-                        int highestNumberOfTimesOnePlayerHasBeenDismissedByAnotherPlayer = 0;
-                        String bowlingPlayer = "NotFound";
-                        String battingPlayer = "NotFound";
-                        for(String bowler : result.keySet()){
-                            for(String playerDismissed : result.get(bowler).keySet()){
-                                if(result.get(bowler).get(playerDismissed) > highestNumberOfTimesOnePlayerHasBeenDismissedByAnotherPlayer) {
-                                    highestNumberOfTimesOnePlayerHasBeenDismissedByAnotherPlayer = result.get(bowler).get(playerDismissed);
-                                    battingPlayer = playerDismissed;
-                                    bowlingPlayer = bowler;
-                                }
+                        class ResultingPair {
+                            String bowlingPlayer;
+                            String battingPlayer;
+                            int highestNumberOfTimesOnePlayerHasBeenDismissedByAnotherPlayer;
+
+                            public ResultingPair(String bowlingPlayer, String battingPlayer, int highestNumberOfTimesOnePlayerHasBeenDismissedByAnotherPlayer) {
+                                this.bowlingPlayer = bowlingPlayer;
+                                this.battingPlayer = battingPlayer;
+                                this.highestNumberOfTimesOnePlayerHasBeenDismissedByAnotherPlayer = highestNumberOfTimesOnePlayerHasBeenDismissedByAnotherPlayer;
+                            }
+
+                            @Override
+                            public String toString() {
+                                return "Bowler : " + bowlingPlayer + ",\tBatter : " + battingPlayer +",\tNumber of dismissals : " + highestNumberOfTimesOnePlayerHasBeenDismissedByAnotherPlayer + "\n";
                             }
                         }
-                        System.out.println("Player Dismissed: " + battingPlayer +
-                                "\nNumber of times player dismissed: " + highestNumberOfTimesOnePlayerHasBeenDismissedByAnotherPlayer +
-                                "\nBowler: " + bowlingPlayer);
+
+                        ArrayList<ResultingPair> pairList = new ArrayList<>();
+
+                        HashMap<String, HashMap<String, Integer>>result = Utils.dismissalsByBowler();
+
+                        int highestOutsCount = 0;
+                        for(String bowler : result.keySet()){
+                            for(String playerDismissed : result.get(bowler).keySet()){
+                                if(result.get(bowler).get(playerDismissed) > highestOutsCount) {
+                                    pairList.clear();
+                                    pairList.add(new ResultingPair(bowler, playerDismissed, result.get(bowler).get(playerDismissed)));
+                                    highestOutsCount = result.get(bowler).get(playerDismissed);
+                                }else if(result.get(bowler).get(playerDismissed) == highestOutsCount) {
+                                    pairList.add(new ResultingPair(bowler, playerDismissed, result.get(bowler).get(playerDismissed)));
+                                }
+                            }
+                        }System.out.println(pairList);
                     }
                     break;
                     case 6 : {
@@ -81,6 +92,12 @@ public class Main {
                     }
                     break;
                     case 7 : {
+                        HashMap<String, Integer> result = Utils.matchesWonByTeam();
+                        for(String team : result.keySet())
+                            System.out.println(team + ": " + result.get(team));
+                    }
+                    break;
+                    case 8 : {
                         exit = true;
                     }
                     break;
