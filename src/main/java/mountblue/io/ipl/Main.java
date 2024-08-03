@@ -89,8 +89,8 @@ public class Main {
 
                 Match match = new Match();
 
-                match.setId(Integer.valueOf(nextRecord[ID]));
-                match.setSeason(Integer.valueOf(nextRecord[SEASON]));
+                match.setId(Integer.parseInt(nextRecord[ID]));
+                match.setSeason(Integer.parseInt(nextRecord[SEASON]));
                 match.setCity(nextRecord[CITY]);
                 match.setDate(LocalDate.parse(nextRecord[DATE]));  // Assuming nextRecord[DATE] is a String that needs to be parsed
                 match.setTeam1(nextRecord[TEAM1]);
@@ -100,8 +100,8 @@ public class Main {
                 match.setResult(nextRecord[RESULT]);
                 match.setDlApplied(Boolean.valueOf(nextRecord[DL_APPLIED]));
                 match.setWinner(nextRecord[WINNER]);
-                match.setWinByRuns(Integer.valueOf(nextRecord[WIN_BY_RUNS]));
-                match.setWinByWickets(Integer.valueOf(nextRecord[WIN_BY_WICKETS]));
+                match.setWinByRuns(Integer.parseInt(nextRecord[WIN_BY_RUNS]));
+                match.setWinByWickets(Integer.parseInt(nextRecord[WIN_BY_WICKETS]));
                 match.setPlayerOfMatch(nextRecord[PLAYER_OF_MATCH]);
                 match.setVenue(nextRecord[VENUE]);
                 match.setUmpire1(nextRecord[UMPIRE1]);
@@ -131,24 +131,24 @@ public class Main {
 
                 Delivery delivery = new Delivery();
 
-                delivery.setMatchId(Integer.valueOf(nextRecord[MATCH_ID]));
-                delivery.setInning(Integer.valueOf(nextRecord[INNING]));
+                delivery.setMatchId(Integer.parseInt(nextRecord[MATCH_ID]));
+                delivery.setInning(Integer.parseInt(nextRecord[INNING]));
                 delivery.setBattingTeam(nextRecord[BATTING_TEAM]);
                 delivery.setBowlingTeam(nextRecord[BOWLING_TEAM]);
-                delivery.setOver(Integer.valueOf(nextRecord[OVER]));
-                delivery.setBall(Integer.valueOf(nextRecord[BALL]));
+                delivery.setOver(Integer.parseInt(nextRecord[OVER]));
+                delivery.setBall(Integer.parseInt(nextRecord[BALL]));
                 delivery.setBatsman(nextRecord[BATSMAN]);
                 delivery.setNonStriker(nextRecord[NON_STRIKER]);
                 delivery.setBowler(nextRecord[BOWLER]);
                 delivery.setSuperOver(Boolean.valueOf(nextRecord[IS_SUPER_OVER]));
-                delivery.setWideRuns(Integer.valueOf(nextRecord[WIDE_RUNS]));
-                delivery.setByeRuns(Integer.valueOf(nextRecord[BYE_RUNS]));
-                delivery.setLegbyeRuns(Integer.valueOf(nextRecord[LEGBYE_RUNS]));
-                delivery.setNoballRuns(Integer.valueOf(nextRecord[NOBALL_RUNS]));
-                delivery.setPenaltyRuns(Integer.valueOf(nextRecord[PENALTY_RUNS]));
-                delivery.setBatsmanRuns(Integer.valueOf(nextRecord[BATSMAN_RUNS]));
-                delivery.setExtraRuns(Integer.valueOf(nextRecord[EXTRA_RUNS]));
-                delivery.setTotalRuns(Integer.valueOf(nextRecord[TOTAL_RUNS]));
+                delivery.setWideRuns(Integer.parseInt(nextRecord[WIDE_RUNS]));
+                delivery.setByeRuns(Integer.parseInt(nextRecord[BYE_RUNS]));
+                delivery.setLegbyeRuns(Integer.parseInt(nextRecord[LEGBYE_RUNS]));
+                delivery.setNoballRuns(Integer.parseInt(nextRecord[NOBALL_RUNS]));
+                delivery.setPenaltyRuns(Integer.parseInt(nextRecord[PENALTY_RUNS]));
+                delivery.setBatsmanRuns(Integer.parseInt(nextRecord[BATSMAN_RUNS]));
+                delivery.setExtraRuns(Integer.parseInt(nextRecord[EXTRA_RUNS]));
+                delivery.setTotalRuns(Integer.parseInt(nextRecord[TOTAL_RUNS]));
                 delivery.setPlayerDismissed(nextRecord[PLAYER_DISMISSED]);
                 delivery.setDismissalKind(nextRecord[DISMISSAL_KIND]);
                 delivery.setFielder(nextRecord[FIELDER]);
