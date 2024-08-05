@@ -92,13 +92,13 @@ public class Main {
                 match.setId(Integer.parseInt(nextRecord[ID]));
                 match.setSeason(Integer.parseInt(nextRecord[SEASON]));
                 match.setCity(nextRecord[CITY]);
-                match.setDate(LocalDate.parse(nextRecord[DATE]));  // Assuming nextRecord[DATE] is a String that needs to be parsed
+                match.setDate(LocalDate.parse(nextRecord[DATE]));
                 match.setTeam1(nextRecord[TEAM1]);
                 match.setTeam2(nextRecord[TEAM2]);
                 match.setTossWinner(nextRecord[TOSS_WINNER]);
                 match.setTossDecision(nextRecord[TOSS_DECISION]);
                 match.setResult(nextRecord[RESULT]);
-                match.setDlApplied(Boolean.valueOf(nextRecord[DL_APPLIED]));
+                match.setDlApplied(Boolean.parseBoolean(nextRecord[DL_APPLIED]));
                 match.setWinner(nextRecord[WINNER]);
                 match.setWinByRuns(Integer.parseInt(nextRecord[WIN_BY_RUNS]));
                 match.setWinByWickets(Integer.parseInt(nextRecord[WIN_BY_WICKETS]));
@@ -140,7 +140,7 @@ public class Main {
                 delivery.setBatsman(nextRecord[BATSMAN]);
                 delivery.setNonStriker(nextRecord[NON_STRIKER]);
                 delivery.setBowler(nextRecord[BOWLER]);
-                delivery.setSuperOver(Boolean.valueOf(nextRecord[IS_SUPER_OVER]));
+                delivery.setSuperOver(Boolean.parseBoolean(nextRecord[IS_SUPER_OVER]));
                 delivery.setWideRuns(Integer.parseInt(nextRecord[WIDE_RUNS]));
                 delivery.setByeRuns(Integer.parseInt(nextRecord[BYE_RUNS]));
                 delivery.setLegbyeRuns(Integer.parseInt(nextRecord[LEGBYE_RUNS]));
@@ -264,10 +264,10 @@ public class Main {
         HashMap<String, HashMap<String, Integer>> dismissalsByBowler = new HashMap<>();
 
         for (Delivery delivery : deliveries) {
-            if (delivery.getPlayerDismissed() == "")
+            if (delivery.getPlayerDismissed().isEmpty())
                 continue;
 
-            if (delivery.getDismissalKind() == "run out")
+            if (delivery.getDismissalKind().equals("run out"))
                 continue;
 
             if (dismissalsByBowler.containsKey(delivery.getBowler())) {
