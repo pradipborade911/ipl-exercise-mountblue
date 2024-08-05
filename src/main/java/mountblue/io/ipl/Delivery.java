@@ -1,4 +1,4 @@
-package org.example;
+package mountblue.io.ipl;
 
 public class Delivery {
     private int matchId;
@@ -22,30 +22,6 @@ public class Delivery {
     private String playerDismissed;
     private String dismissalKind;
     private String fielder;
-
-    public Delivery(int matchId, int inning, String battingTeam, String bowlingTeam, int over, int ball, String batsman, String nonStriker, String bowler, boolean isSuperOver, int wideRuns, int byeRuns, int legbyeRuns, int noballRuns, int penaltyRuns, int batsmanRuns, int extraRuns, int totalRuns, String playerDismissed, String dismissalKind, String fielder) {
-        this.matchId = matchId;
-        this.inning = inning;
-        this.battingTeam = battingTeam;
-        this.bowlingTeam = bowlingTeam;
-        this.over = over;
-        this.ball = ball;
-        this.batsman = batsman;
-        this.nonStriker = nonStriker;
-        this.bowler = bowler;
-        this.isSuperOver = isSuperOver;
-        this.wideRuns = wideRuns;
-        this.byeRuns = byeRuns;
-        this.legbyeRuns = legbyeRuns;
-        this.noballRuns = noballRuns;
-        this.penaltyRuns = penaltyRuns;
-        this.batsmanRuns = batsmanRuns;
-        this.extraRuns = extraRuns;
-        this.totalRuns = totalRuns;
-        this.playerDismissed = playerDismissed;
-        this.dismissalKind = dismissalKind;
-        this.fielder = fielder;
-    }
 
     public int getMatchId() {
         return matchId;
