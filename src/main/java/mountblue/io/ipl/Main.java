@@ -77,16 +77,17 @@ public class Main {
 
         System.out.println("\n8. Most Runs in IPL 2016.");
         findLeadingScorerByTeamIn2016(matches, deliveries);
+
+        System.out.println("\n8. Find the player with highest Strike Rate per team per year");
+        findBestStrikerPerSeasonPerTeam(matches, deliveries);
     }
 
     private static List<Match> setMatchesData() {
         List<Match> matches = new ArrayList<>();
-
-        String matchesPath = "./../data/matches.csv";
+        String matchesPath = "./data/matches.csv";
 
         try (BufferedReader matchesReader = new BufferedReader(new FileReader(matchesPath))) {
             String nextLine;
-
             matchesReader.readLine();
 
             while ((nextLine = matchesReader.readLine()) != null) {
@@ -125,8 +126,7 @@ public class Main {
 
     private static List<Delivery> setDeliveriesData() {
         List<Delivery> deliveries = new ArrayList<>();
-
-        String deliveriessPath = "./../data/deliveries.csv";
+        String deliveriessPath = "./data/deliveries.csv";
 
         try (BufferedReader deliveriesReader = new BufferedReader(new FileReader(deliveriessPath))) {
             String nextLine;
@@ -177,26 +177,19 @@ public class Main {
         for (Match match : matches) {
             if (teamWinsBySeason.containsKey(match.getSeason())) {
                 Map<String, Integer> seasonsWinRecord = teamWinsBySeason.get(match.getSeason());
-
                 if (match.getResult().equals("no result")) {
                     seasonsWinRecord.put("No Result", seasonsWinRecord.getOrDefault("No Result", 0) + 1);
                     teamWinsBySeason.put(match.getSeason(), seasonsWinRecord);
                 } else if (teamWinsBySeason.get(match.getSeason()).containsKey(match.getWinner())) {
-
                     seasonsWinRecord.put(match.getWinner(), seasonsWinRecord.get(match.getWinner()) + 1);
-
                     teamWinsBySeason.put(match.getSeason(), seasonsWinRecord);
                 } else {
-
                     seasonsWinRecord.put(match.getWinner(), 1);
-
                     teamWinsBySeason.put(match.getSeason(), seasonsWinRecord);
                 }
             } else {
                 Map<String, Integer> winnerCount = new TreeMap<>();
-
                 winnerCount.put(match.getWinner(), 1);
-
                 teamWinsBySeason.put(match.getSeason(), winnerCount);
             }
         }
@@ -213,19 +206,18 @@ public class Main {
 
         HashMap<String, Integer> ballsFacedByBatter = new HashMap<>();
         HashMap<String, Integer> runsScoredByBatter = new HashMap<>();
-
         Set<Integer> matchIds = new HashSet<>();
 
-        for (Match match : matches)
+        for (Match match : matches) {
             if (year == match.getSeason())
                 matchIds.add(match.getId());
+        }
 
         for (Delivery delivery : deliveries) {
             if (!matchIds.contains(delivery.getMatchId()))
                 continue;
 
             Integer runsScoredByBatterOnThisDelivery = delivery.getBatsmanRuns();
-
             runsScoredByBatter.put(delivery.getBatsman(), runsScoredByBatter.getOrDefault(delivery.getBatsman(), 0) + runsScoredByBatterOnThisDelivery);
 
             if (delivery.getNoballRuns() == 0 && delivery.getWideRuns() == 0) {
@@ -493,4 +485,126 @@ public class Main {
         });
     }
 
+    private static void findBestStrikerPerSeasonPerTeam(List<Match> matches, List<Delivery> deliveries) {
+        HashMap<Integer, HashMap<String, HashMap<String, BatterStrikeRateStats>>> playerPerformanceData = new HashMap<>();
+
+        HashMap<Integer, Integer> seasonsByMatchIds = new HashMap<>();
+
+        for (Match match : matches) {
+            seasonsByMatchIds.put(match.getId(), match.getSeason());
+        }
+
+        for (Delivery delivery : deliveries) {
+            final Integer thisSeason = seasonsByMatchIds.get(delivery.getMatchId());
+            final String thisTeam = delivery.getBattingTeam();
+            final String thisBatter = delivery.getBatsman();
+            final Integer runsScored = delivery.getBatsmanRuns();
+            final Integer ballsBowled = delivery.getNoballRuns() == 0 && delivery.getWideRuns() == 0 ? 1 : 0;
+
+            if (playerPerformanceData.containsKey(thisSeason)) {
+                if (playerPerformanceData.get(thisSeason).containsKey(thisTeam)) {
+                    if (playerPerformanceData.get(thisSeason).get(thisTeam).containsKey(thisBatter)) {
+                        BatterStrikeRateStats batterStats = playerPerformanceData
+                                .get(thisSeason)
+                                .get(thisTeam)
+                                .get(thisBatter);
+                        batterStats.addNameRunsAndBalls(thisBatter, runsScored, ballsBowled);
+
+                        HashMap<String, BatterStrikeRateStats> playerData = playerPerformanceData.get(thisSeason).get(thisTeam);
+                        playerData.put(thisBatter, batterStats);
+
+                        HashMap<String, HashMap<String, BatterStrikeRateStats>> teamData = playerPerformanceData.get(thisSeason);
+                        teamData.put(thisTeam, playerData);
+
+                        playerPerformanceData.put(thisSeason, teamData);
+                    } else {
+                        BatterStrikeRateStats batterStats = new BatterStrikeRateStats();
+                        batterStats.addNameRunsAndBalls(thisBatter, runsScored, ballsBowled);
+
+                        HashMap<String, BatterStrikeRateStats> playerData = playerPerformanceData.get(thisSeason).get(thisTeam);
+                        playerData.put(thisBatter, batterStats);
+
+                        HashMap<String, HashMap<String, BatterStrikeRateStats>> teamData = playerPerformanceData.get(thisSeason);
+                        teamData.put(thisTeam, playerData);
+                    }
+
+                } else {
+                    BatterStrikeRateStats batterStats = new BatterStrikeRateStats();
+                    batterStats.addNameRunsAndBalls(thisBatter, runsScored, ballsBowled);
+
+                    HashMap<String, BatterStrikeRateStats> playerData = new HashMap<>();
+                    playerData.put(thisBatter, batterStats);
+
+                    HashMap<String, HashMap<String, BatterStrikeRateStats>> teamData = playerPerformanceData.get(thisSeason);
+                    teamData.put(thisTeam, playerData);
+                }
+
+            } else {
+                BatterStrikeRateStats batterStats = new BatterStrikeRateStats();
+                batterStats.addNameRunsAndBalls(thisBatter, runsScored, ballsBowled);
+
+                HashMap<String, BatterStrikeRateStats> playerData = new HashMap<>();
+                playerData.put(thisBatter, batterStats);
+
+                HashMap<String, HashMap<String, BatterStrikeRateStats>> teamData = new HashMap<>();
+                teamData.put(thisTeam, playerData);
+
+                playerPerformanceData.put(thisSeason, teamData);
+            }
+        }
+
+        for (Integer season : playerPerformanceData.keySet()) {
+            System.out.println("Season: " + season);
+
+            for (String team : playerPerformanceData.get(season).keySet()) {
+                BatterStrikeRateStats bestStats = new BatterStrikeRateStats();
+
+                for (String player : playerPerformanceData.get(season).get(team).keySet()) {
+                    BatterStrikeRateStats thisBattersStats = playerPerformanceData.get(season).get(team).get(player);
+                    if (thisBattersStats.getStrikeRate() > bestStats.getStrikeRate()) {
+                        bestStats = thisBattersStats;
+                    }
+                }
+
+                System.out.println("\t\t" + team + ", " + bestStats.getName() + ": " + bestStats.getStrikeRate());
+            }
+        }
+    }
+
+    private static void findBestStrikerEachSeasonPerTeam(List<Match> matches, List<Delivery> deliveries) {
+        HashMap<Integer, HashMap<String, HashMap<String, BatterStrikeRateStats>>> playerPerformanceData = new HashMap<>();
+        HashMap<Integer, Integer> seasonsByMatchIds = new HashMap<>();
+
+        for (Match match : matches) {
+            seasonsByMatchIds.put(match.getId(), match.getSeason());
+        }
+
+        for (Delivery delivery : deliveries) {
+            final Integer thisSeason = seasonsByMatchIds.get(delivery.getMatchId());
+            final String thisTeam = delivery.getBattingTeam();
+            final String thisBatter = delivery.getBatsman();
+            final int runsScored = delivery.getBatsmanRuns();
+            final int ballsFaced = (delivery.getNoballRuns() == 0 && delivery.getWideRuns() == 0) ? 1 : 0;
+
+            playerPerformanceData
+                    .computeIfAbsent(thisSeason, k -> new HashMap<>())
+                    .computeIfAbsent(thisTeam, k -> new HashMap<>())
+                    .computeIfAbsent(thisBatter, k -> new BatterStrikeRateStats())
+                    .addNameRunsAndBalls(thisBatter, runsScored, ballsFaced);
+        }
+
+        for (Map.Entry<Integer, HashMap<String, HashMap<String, BatterStrikeRateStats>>> seasonEntry : playerPerformanceData.entrySet()) {
+            final Integer season = seasonEntry.getKey();
+            System.out.println("Season: " + season);
+
+            for (Map.Entry<String, HashMap<String, BatterStrikeRateStats>> teamEntry : seasonEntry.getValue().entrySet()) {
+                final String team = teamEntry.getKey();
+                final BatterStrikeRateStats bestStats = teamEntry.getValue().values().stream()
+                        .max(Comparator.comparingDouble(BatterStrikeRateStats::getStrikeRate))
+                        .orElse(new BatterStrikeRateStats());
+
+                System.out.println("\t\t" + team + ", " + bestStats.getName() + ": " + bestStats.getStrikeRate());
+            }
+        }
+    }
 }
